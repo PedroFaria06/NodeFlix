@@ -2,9 +2,28 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const dotenv = require('dotenv');
+const swaggerJsdoc = require('swagger-jsdoc');
+const swaggerUi = require('swagger-ui-express');
 
 dotenv.config();
 const app = express();
+
+// Configuração do Swagger JSDoc
+const options = {
+  definition: {
+    openapi: '3.0.0',
+    info: {
+      title: 'NodeFlix',
+      version: '1.0.0',
+      description: 'A',
+    },
+  },
+  apis: ['./swagger.js'], 
+};
+const specs = swaggerJsdoc(options);
+
+// Configuração do Swagger UI
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(specs));
 
 app.use(cors());
 app.use(express.json());
