@@ -53,6 +53,7 @@ module.exports = class UserController {
             res.status(500).json({ message: error })
         }
     }
+
     static async login(req, res) {
         const { email, password } = req.body
         if (!email) {
@@ -80,6 +81,7 @@ module.exports = class UserController {
         }
         await createUserToken(user, req, res)
     }
+
     //verifica e valida om usuario por jwt
     static async checkUser(req, res) {
         let currentUser
@@ -93,9 +95,21 @@ module.exports = class UserController {
         }
         res.status(200).send(currentUser)
     }
+
     static async getUserById(req, res) {
+        const { limite, pagina } = req.query;
+
+        const limiteInt = parseInt(limite, 10);
+        const paginaInt = parseInt(pagina, 10);
+
+        if (!Number.isInteger(limiteInt) || !Number.isInteger(paginaInt) || limiteInt <= 0 || paginaInt < 1) {
+            return res.status(400).json({ error: 'Parâmetros inválidos.' });
+        }
+
+        const indiceInicio = (paginaInt - 1) * limiteInt;
+
         const id = req.params.id
-        const user = await User.findById(id).select("-password")
+        const user = await User.findById(id).select("-password").skip(indiceInicio).limit(limiteInt);
         if (!user) {
             res.status(422).json({
                 message: 'Usuário não encontrado!'

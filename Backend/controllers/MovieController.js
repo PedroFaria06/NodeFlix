@@ -61,14 +61,35 @@ module.exports = class MovieController {
     }
 
     static async getAll(req, res) {
+        const { limite, pagina } = req.query;
+
+        const limiteInt = parseInt(limite, 10);
+        const paginaInt = parseInt(pagina, 10);
+
+        if (!Number.isInteger(limiteInt) || !Number.isInteger(paginaInt) || limiteInt <= 0 || paginaInt < 1) {
+            return res.status(400).json({ error: 'Parâmetros inválidos.' });
+        }
+
+        const indiceInicio = (paginaInt - 1) * limiteInt;
+
         //manda os filmes mais novos
-        const movies = await Movie.find().sort('-createdAt')
+        const movies = await Movie.find().sort('-createdAt').skip(indiceInicio).limit(limiteInt);
 
         res.status(200).json({
             movies: movies
         })
     }
     static async getMovieById(req, res) {
+        const { limite, pagina } = req.query;
+
+        const limiteInt = parseInt(limite, 10);
+        const paginaInt = parseInt(pagina, 10);
+
+        if (!Number.isInteger(limiteInt) || !Number.isInteger(paginaInt) || limiteInt <= 0 || paginaInt < 1) {
+            return res.status(400).json({ error: 'Parâmetros inválidos.' });
+        }
+
+        const indiceInicio = (paginaInt - 1) * limiteInt;
 
         const id = req.params.id
 
@@ -77,7 +98,7 @@ module.exports = class MovieController {
             return
         }
         //verifica se o filme existe
-        const movie = await Movie.findById(id)
+        const movie = await Movie.findById(id).skip(indiceInicio).limit(limiteInt);
 
         if (!movie) {
             res.status(404).json({ message: 'Filme não encontrado' })
