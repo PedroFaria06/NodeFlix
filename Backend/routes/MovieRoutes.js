@@ -10,9 +10,3 @@ router.get('/:id', MovieController.getMovieById)
 router.delete('/:id', verifyToken, MovieController.removeMovieById)
 router.patch('/:id', verifyToken, MovieController.updateMovie)
 module.exports = router
-
-//sanitizer
-//rate limit
-//xss
-//https
-//rota para busca

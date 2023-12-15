@@ -28,16 +28,6 @@ module.exports = class UserController {
             res.status(422).json({ message: 'A senha é obrigatoria' })
             return
         }
-        if (!confirmpassword) {
-            res.status(422).json({ message: 'A confirmação de senha é obrigatoria' })
-            return
-        }
-        if (password !== confirmpassword) {
-            res.status(422).json({
-                message: 'A senha e a confirmação de senha precisam ser iguais!',
-            })
-            return
-        }
         //check se o usuario existe
         const userExists = await User.findOne({ email: email })
         if (userExists) {
@@ -164,12 +154,7 @@ module.exports = class UserController {
         }
         user.phone = phone
 
-        if (password !== confirmpassword) {
-            res.status(422).json({
-                message: 'As senhas não conferem!',
-            })
-            return
-        } else if (password === confirmpassword && password != null) {
+        if (password != null) {
 
             //criando uma nova senha
             const salt = await bcrypt.genSalt(6)
