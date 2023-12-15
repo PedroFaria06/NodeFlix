@@ -1,9 +1,6 @@
-const mongoose = require('../db/conn')
-const { Schema } = mongoose
+const mongoose = require('mongoose')
 
-const Movie = mongoose.model(
-    'Movie',
-    new Schema({
+const Movie = new mongoose.Schema({
         name: {
             type: String,
             required: true
@@ -18,12 +15,12 @@ const Movie = mongoose.model(
         },
         User: {
             //alteração para salvar somente o id do usuario 
-            type: Schema.Types.ObjectId,
+            type: mongoose.Schema.Types.ObjectId,
             ref: 'User'
         },
 
 
     }, { timestamps: true },
     )
-)
-module.exports = Movie
+
+module.exports = mongoose.model('Movie', Movie);

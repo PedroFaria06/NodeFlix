@@ -1,9 +1,6 @@
-const mongoose = require('../db/conn')
-const {Schema} = mongoose
+const mongoose = require('mongoose')
 
-const User = mongoose.model(
-    'User',
-    new Schema({
+const User = new mongoose.Schema({
         name: {
             type: String,
             required: true
@@ -20,11 +17,11 @@ const User = mongoose.model(
             type: String,
             required: true
         },
-        confirmpassword:{
+        role:{
             type: String,
-            required: true
+            enum: ['user', 'admin'],
+            default: 'user'
         }
     }, {timestamps: true},
     )
-)
-module.exports = User
+module.exports = mongoose.model('User', User);
