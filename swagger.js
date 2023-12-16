@@ -28,7 +28,10 @@
  *             sinopse:
  *               type: string
  *             dataLancamento:
- *               type: date
+ *               type: string
+ *               format: date
+ *             User:
+ *               type: ObjectId
  *     responses:
  *       201:
  *         description: Filme registrado com sucesso
@@ -37,6 +40,7 @@
  *       500:
  *         description: Erro interno do servidor
  */
+
 
 /**
  * @swagger
@@ -76,7 +80,10 @@
  *                     sinopse:
  *                      type: string
  *                     dataLancamento:
- *                      type: date
+ *                      type: string
+ *                      format: date
+ *                     User:
+ *                      type: ObjectId
  *       401:
  *         description: Não autorizado
  *       500:
@@ -111,7 +118,10 @@
  *                     sinopse:
  *                      type: string
  *                     dataLancamento:
- *                      type: date
+ *                      type: string
+ *                      format: date
+ *                     User:
+ *                      type: ObjectId
  *       401:
  *         description: Não autorizado
  *       404:
@@ -149,7 +159,10 @@
  *                     sinopse:
  *                      type: string
  *                     dataLancamento:
- *                      type: date
+ *                      type: string
+ *                      format: date
+ *                     User:
+ *                      type: ObjectId
  */
 
 
@@ -184,7 +197,10 @@
  *                     sinopse:
  *                      type: string
  *                     dataLancamento:
- *                      type: date
+ *                      type: string
+ *                      format: date
+ *                     User:
+ *                      type: ObjectId
  *     responses:
  *       200:
  *         description: Filme atualizado com sucesso
