@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const User = require('../models/User'); 
 const Movie = require('../models/Movie');
+const Playlist = require('../models/Playlist');
 
 const installDatabase = async (req, res) => {
   try {
@@ -19,6 +20,14 @@ const installDatabase = async (req, res) => {
       { name: 'Interstellar', sinopse: 'Viagem estelar', dataLancamento: new Date('2003-06-22')},
       { name: 'Fuga das Galinhas', sinopse: 'Galinhas fugindo', dataLancamento: new Date('2012-06-22')},
       { name: 'Homem-Aranha', sinopse: 'super heroi', dataLancamento: new Date('2010-06-22')},
+    ]);
+
+    await Playlist.insertMany([
+      { name: 'Natal', description: 'filmes para assistir no natal', movies: [Movie[0]._id], createdBy: User[0]._id},
+      { name: 'Ação', description: 'filmes emocionantes', movies: [Movie[1]._id, Movie[4]._id], createdBy: User[1]._id},
+      { name: 'Sci-Fi', description: 'filmes de ficção científica', movies: [Movie[2]._id], createdBy: User[2]._id},
+      { name: 'Animação', description: 'filmes para todas as idades', movies: [Movie[3]._id], createdBy: User[3]._id},
+      { name: 'Suspense', description: 'filmes para os corajosos', movies: [Movie[1]._id, Movie[2]._id], createdBy: User[4]._id},
     ]);
 
     res.json({ success: true, message: 'Database Installation Completed Successfully' });

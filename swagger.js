@@ -1,10 +1,195 @@
 /**
  * @swagger
  * tags:
- *   - name: Movie
- *     description: Operações relacionadas a filmes
  *   - name: User
  *     description: Operações relacionadas a usuários
+ *   - name: Movie
+ *     description: Operações relacionadas a filmes
+ *   - name: Playlist
+ *     description: Operações relacionadas a playlists
+ */
+
+/**
+ * @swagger
+ * /users/register:
+ *   post:
+ *     summary: Registrar um novo usuário
+ *     tags: [User]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *               email:
+ *                 type: string
+ *               phone:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Usuário registrado com sucesso
+ *       500:
+ *         description: Erro interno do servidor
+ */
+
+/**
+ * @swagger
+ * /users/login:
+ *   post:
+ *     summary: Autenticar um usuário
+ *     tags: [User]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *               email:
+ *                 type: string
+ *               phone:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Usuário autenticado com sucesso
+ *       401:
+ *         description: Credenciais inválidas
+ *       500:
+ *         description: Erro interno do servidor
+ */
+
+/**
+ * @swagger
+ * /users/checkuser:
+ *   get:
+ *     summary: Verificar informações do usuário autenticado
+ *     tags: [User]
+ *     security:
+ *       - BearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Informações do usuário recuperadas com sucesso
+ *       401:
+ *         description: Não autorizado
+ *       500:
+ *         description: Erro interno do servidor
+ */
+
+/**
+ * @swagger
+ * /users/{id}:
+ *   get:
+ *     summary: Obter detalhes de um usuário específico
+ *     tags: [User]
+ *     security:
+ *       - BearerAuth: []
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         description: ID do usuário
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Detalhes do usuário obtidos com sucesso
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *               email:
+ *                 type: string
+ *               phone:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *       401:
+ *         description: Não autorizado
+ *       404:
+ *         description: Usuário não encontrado
+ *       500:
+ *         description: Erro interno do servidor
+ */
+
+/**
+ * @swagger
+ * /users/edit/{id}:
+ *   patch:
+ *     summary: Atualizar informações de um usuário existente
+ *     tags: [User]
+ *     security:
+ *       - BearerAuth: []
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         description: ID do usuário a ser atualizado
+ *         required: true
+ *         schema:
+ *           type: string
+ *       - name: UserData
+ *         in: body
+ *         description: Dados atualizados do usuário
+ *         required: true
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *               email:
+ *                 type: string
+ *               phone:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Usuário atualizado com sucesso
+ *       401:
+ *         description: Não autorizado
+ *       404:
+ *         description: Usuário não encontrado
+ *       500:
+ *         description: Erro interno do servidor
+ */
+
+/**
+ * @swagger
+ * /users/{id}:
+ *   delete:
+ *     summary: Excluir um usuário existente
+ *     tags: [User]
+ *     security:
+ *       - BearerAuth: []
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         description: ID do usuário a ser excluído
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Usuário excluído com sucesso
+ *       401:
+ *         description: Não autorizado
+ *       404:
+ *         description: Usuário não encontrado
+ *       500:
+ *         description: Erro interno do servidor
  */
 
 /**
@@ -240,184 +425,139 @@
 
 /**
  * @swagger
- * /users/register:
+ * /playlists/create:
  *   post:
- *     summary: Registrar um novo usuário
- *     tags: [User]
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               name:
- *                 type: string
- *               email:
- *                 type: string
- *               phone:
- *                 type: string
- *               password:
- *                 type: string
- *     responses:
- *       200:
- *         description: Usuário registrado com sucesso
- *       500:
- *         description: Erro interno do servidor
- */
-
-/**
- * @swagger
- * /users/login:
- *   post:
- *     summary: Autenticar um usuário
- *     tags: [User]
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               name:
- *                 type: string
- *               email:
- *                 type: string
- *               phone:
- *                 type: string
- *               password:
- *                 type: string
- *     responses:
- *       200:
- *         description: Usuário autenticado com sucesso
- *       401:
- *         description: Credenciais inválidas
- *       500:
- *         description: Erro interno do servidor
- */
-
-/**
- * @swagger
- * /users/checkuser:
- *   get:
- *     summary: Verificar informações do usuário autenticado
- *     tags: [User]
- *     security:
- *       - BearerAuth: []
- *     responses:
- *       200:
- *         description: Informações do usuário recuperadas com sucesso
- *       401:
- *         description: Não autorizado
- *       500:
- *         description: Erro interno do servidor
- */
-
-/**
- * @swagger
- * /users/{id}:
- *   get:
- *     summary: Obter detalhes de um usuário específico
- *     tags: [User]
+ *     summary: Create a new playlist
+ *     tags: [Playlist]
  *     security:
  *       - BearerAuth: []
  *     parameters:
- *       - name: id
- *         in: path
- *         description: ID do usuário
- *         required: true
- *         schema:
- *           type: string
- *     responses:
- *       200:
- *         description: Detalhes do usuário obtidos com sucesso
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *             properties:
- *               name:
- *                 type: string
- *               email:
- *                 type: string
- *               phone:
- *                 type: string
- *               password:
- *                 type: string
- *       401:
- *         description: Não autorizado
- *       404:
- *         description: Usuário não encontrado
- *       500:
- *         description: Erro interno do servidor
- */
-
-/**
- * @swagger
- * /users/edit/{id}:
- *   patch:
- *     summary: Atualizar informações de um usuário existente
- *     tags: [User]
- *     security:
- *       - BearerAuth: []
- *     parameters:
- *       - name: id
- *         in: path
- *         description: ID do usuário a ser atualizado
- *         required: true
- *         schema:
- *           type: string
- *       - name: UserData
+ *       - name: PlaylistData
  *         in: body
- *         description: Dados atualizados do usuário
+ *         description: Data of the playlist to be created
  *         required: true
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *             properties:
- *               name:
- *                 type: string
- *               email:
- *                 type: string
- *               phone:
- *                 type: string
- *               password:
- *                 type: string
+ *         schema:
+ *           type: object
+ *           properties:
+ *             name:
+ *               type: string
+ *             description:
+ *               type: string
+ *             createdBy:
+ *               type: ObjectId
+ *     responses:
+ *       201:
+ *         description: Playlist created successfully
+ *       401:
+ *         description: Not authorized
+ *       404:
+ *         description: User not found
+ *       500:
+ *         description: Internal server error
+ */
+
+/**
+ * @swagger
+ * /playlists/{playlistId}/add/{movieId}:
+ *   post:
+ *     summary: Add a movie to a playlist
+ *     tags: [Playlist]
+ *     security:
+ *       - BearerAuth: []
+ *     parameters:
+ *       - name: playlistId
+ *         in: path
+ *         description: ID of the playlist
+ *         required: true
+ *         schema:
+ *           type: string
+ *       - name: movieId
+ *         in: path
+ *         description: ID of the movie to be added
+ *         required: true
+ *         schema:
+ *           type: string
  *     responses:
  *       200:
- *         description: Usuário atualizado com sucesso
+ *         description: Movie added to the playlist successfully
+ *       401:
+ *         description: Not authorized
+ *       404:
+ *         description: Playlist or movie not found
+ *       500:
+ *         description: Internal server error
+ */
+
+/**
+ * @swagger
+ * /playlists:
+ *   get:
+ *     summary: Get all playlists
+ *     tags: [Playlist]
+ *     responses:
+ *       200:
+ *         description: List of playlists retrieved successfully
+ *       500:
+ *         description: Internal server error
+ */
+
+/**
+ * @swagger
+ * /playlists/{playlistId}:
+ *   delete:
+ *     summary: Excluir uma playlist
+ *     tags: [Playlist]
+ *     security:
+ *       - BearerAuth: []
+ *     parameters:
+ *       - name: playlistId
+ *         in: path
+ *         description: ID da playlist a ser excluída
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Playlist excluída com sucesso
  *       401:
  *         description: Não autorizado
  *       404:
- *         description: Usuário não encontrado
+ *         description: Playlist não encontrada
  *       500:
  *         description: Erro interno do servidor
  */
 
 /**
  * @swagger
- * /users/{id}:
+ * /playlists/{playlistId}/remove/{movieId}:
  *   delete:
- *     summary: Excluir um usuário existente
- *     tags: [User]
+ *     summary: Remover um filme de uma playlist
+ *     tags: [Playlist]
  *     security:
  *       - BearerAuth: []
  *     parameters:
- *       - name: id
+ *       - name: playlistId
  *         in: path
- *         description: ID do usuário a ser excluído
+ *         description: ID da playlist
+ *         required: true
+ *         schema:
+ *           type: string
+ *       - name: movieId
+ *         in: path
+ *         description: ID do filme a ser removido
  *         required: true
  *         schema:
  *           type: string
  *     responses:
  *       200:
- *         description: Usuário excluído com sucesso
+ *         description: Filme removido da playlist com sucesso
  *       401:
  *         description: Não autorizado
  *       404:
- *         description: Usuário não encontrado
+ *         description: Playlist não encontrada
  *       500:
  *         description: Erro interno do servidor
  */
+
+
 
