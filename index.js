@@ -17,6 +17,15 @@ const options = {
       version: '1.0.0',
       description: 'A',
     },
+    components: {
+      securitySchemes: {
+        BearerAuth: {
+          type: 'http',
+          scheme: 'bearer',
+          bearerFormat: 'JWT',
+        },
+      },
+    },
   },
   apis: ['./swagger.js'], 
 };
