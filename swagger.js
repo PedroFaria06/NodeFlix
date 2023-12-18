@@ -214,7 +214,6 @@
  *               type: string
  *             dataLancamento:
  *               type: string
- *               format: date
  *             User:
  *               type: ObjectId
  *     responses:

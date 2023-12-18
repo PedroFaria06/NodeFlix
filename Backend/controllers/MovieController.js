@@ -4,61 +4,42 @@ const { ObjectId } = require('mongodb')
 
 const getToken = require("../helpers/get-token")
 const getUserByToken = require("../helpers/get-user-by-token")
-const sanitizeHtml = require('sanitize-html');
 
 module.exports = class MovieController {
 
-    //create a filmes
-    static async create(req, res) {
-        // res.json({ message: "Deu certo!" })
-        const { name, sinopse, dataLancamento } = req.body
+    // Create a movie
+static async create(req, res) {
+    try {
+        const { name, sinopse, dataLancamento } = req.body;
 
-        const available = true
+        // Get Movie owner
+        const token = getToken(req);
+        const user = await getUserByToken(token);
 
-        //validations
-        if (!name) {
-            res.status(422).json({ message: "O nome é obrigatório!" })
-        }
-        if (!sinopse) {
-            res.status(422).json({ message: "A sinopse é obrigatória!" })
-        }
-        if (!dataLancamento) {
-            res.status(422).json({ message: "A data de lançamento é obrigatória!" })
-        }
-        //get Movie owner
-        const token = getToken(req)
-        const user = await getUserByToken(token)
-
-        const dataLan = new Date(dataLancamento)
-        //create a Movie
-        const sanitizedMovieData = {
-            name: sanitizeHtml(name),
-            sinopse: sanitizeHtml(sinopse),
-            dataLancamento: sanitizeHtml(dataLancamento)
-          };
-      
         const movie = new Movie({
-            name: sanitizedMovieData.name,
-            sinopse: sanitizedMovieData.sinopse,
-            dataLancamento: sanitizedMovieData.dataLancamento,
+            name,
+            sinopse,
+            dataLancamento,
             user: {
                 _id: user.id,
                 name: user.name,
                 phone: user.phone,
             },
-        })
+        });
 
+        const newMovie = await movie.save();
 
-        try {
-            const newMovie = await movie.save()
-            res.status(201).json({
-                message: 'Filme cadastrado com sucesso!',
-                newMovie
-            })
-        } catch (error) {
-            res.status(500).json({ message: error })
-        }
+        res.status(201).json({
+            message: 'Filme cadastrado com sucesso!',
+            newMovie
+        });
+    } catch (error) {
+        console.error(error); // Log do erro para debug
+        res.status(500).json({ message: 'Ocorreu um erro ao cadastrar o filme.' });
     }
+}
+
+    
 
     static async getAll(req, res) {
         const { limite, pagina } = req.query;
@@ -159,13 +140,13 @@ module.exports = class MovieController {
         const updatedMovie = await Movie.findByIdAndUpdate(id, updateData, { new: true })
 
         res.status(200).json({ message: 'Filme atualizado', updatedMovie })
-    } catch(error) {
-        res.status(500).json({ message: 'Ocorreu um erro ao atualizar o filme' })
+    // } catch(error) {
+    //     res.status(500).json({ message: 'Ocorreu um erro ao atualizar o filme' })
 
     }
     
     static async search(req, res) {
-        try {
+        // try {
             const { title } = req.query;
 
             // Realiza a busca dos filmes pelo título
@@ -174,8 +155,8 @@ module.exports = class MovieController {
             });
 
             res.status(200).json({ movies });
-        } catch (error) {
-            res.status(500).json({ message: 'Erro ao pesquisar filmes', error });
-        }
+        // } catch (error) {
+        //     res.status(500).json({ message: 'Erro ao pesquisar filmes', error });
+        // }
     }
 }

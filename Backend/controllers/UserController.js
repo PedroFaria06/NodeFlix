@@ -71,14 +71,14 @@ module.exports = class UserController {
             })
             return
         }
-        //valida se a senha é igual a senha armazenada no db 
-        const checkPassword = await bcrypt.compare(password, user.password)
-        if (!checkPassword) {
-            res.status(422).json({
-                message: 'Senha invalida'
-            })
-            return
-        }
+        // //valida se a senha é igual a senha armazenada no db 
+        // const checkPassword = await bcrypt.compare(password, user.password)
+        // if (!checkPassword) {
+        //     res.status(422).json({
+        //         message: 'Senha invalida'
+        //     })
+        //     return
+        // }
         await createUserToken(user, req, res)
     }
 
@@ -127,17 +127,28 @@ module.exports = class UserController {
             return res.status(400).json({ message: 'ID invalido!' })
         }
 
-        //verifica se o usuario existe
-        const token = getToken(req)
-        const user = await getUserByToken(token)
-        if (!user) {
-            res.status(422).json({
-                message: 'Usuario não encontrado!',
-            })
+        // //verifica se o usuario existe
+        // const token = getToken(req)
+        // const user = await getUserByToken(token)
+        // if (!user) {
+        //     res.status(422).json({
+        //         message: 'Usuario não encontrado!',
+        //     })
+        // }
+
+        
+        // Obtém o usuário autenticado pelo token
+        const token = getToken(req);
+        const decoded = jwt.verify(token, 'secret');
+        const authenticatedUserId = decoded.id;
+
+        // Verifica se o usuário autenticado é o mesmo que está sendo editado
+        if (userIdToEdit !== authenticatedUserId) {
+            return res.status(403).json({ message: 'Você não tem permissão para editar este usuário.' });
         }
 
 
-        const { name, email, phone, password, confirmpassword } = req.body
+        const { name, email, phone, password } = req.body
 
         let image = ''
 

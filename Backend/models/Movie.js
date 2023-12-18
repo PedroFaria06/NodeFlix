@@ -10,7 +10,7 @@ const Movie = new mongoose.Schema({
             required: true
         },
         dataLancamento: {
-            type: Date,
+            type: String,
             required: true
         },
         User: {

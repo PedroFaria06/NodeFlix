@@ -15,11 +15,11 @@ const installDatabase = async (req, res) => {
     ]);
     
     const movies = await Movie.insertMany([
-      { name: 'Velozes e Furiosos', sinopse: 'Corrida',  dataLancamento: new Date('2001-06-22')},
-      { name: 'Duro de Matar', sinopse: 'Tiroteio', dataLancamento: new Date('2005-06-22')},
-      { name: 'Interstellar', sinopse: 'Viagem estelar', dataLancamento: new Date('2003-06-22')},
-      { name: 'Fuga das Galinhas', sinopse: 'Galinhas fugindo', dataLancamento: new Date('2012-06-22')},
-      { name: 'Homem-Aranha', sinopse: 'super heroi', dataLancamento: new Date('2010-06-22')},
+      { name: 'Velozes e Furiosos', sinopse: 'Corrida',  dataLancamento: '123'},
+      { name: 'Duro de Matar', sinopse: 'Tiroteio', dataLancamento: '123'},
+      { name: 'Interstellar', sinopse: 'Viagem estelar', dataLancamento: '123'},
+      { name: 'Fuga das Galinhas', sinopse: 'Galinhas fugindo', dataLancamento: '123'},
+      { name: 'Homem-Aranha', sinopse: 'super heroi', dataLancamento: '123'},
     ]);
     
     const playlists = await Playlist.insertMany([
